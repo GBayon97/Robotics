@@ -6,11 +6,11 @@ import math
 
 class IMU:
 
-    def __init__(self):
+    def __init__(self,i2c = SMBus(3),address = 0x68, period = .05):
 
-        self.i2c = SMBus(3)
-        self.i2c_addr = 0x68
-        self.period = 0.05
+        self.i2c = i2c
+        self.i2c_addr = address
+        self.period = period
         self.i2c.write_byte_data(self.i2c_addr,0x6b,0x00)
         self.i2c.write_byte_data(self.i2c_addr,0x1b,0x08)
         self.i2c.write_byte_data(self.i2c_addr,0x1c,0x10)
@@ -18,7 +18,9 @@ class IMU:
     
     def Calibrate(self):
 
-        print("Calib")
+        """
+        Method for calibrating the IMU
+        """
         gyro_X_calibracion = 0
         gyro_Y_calibracion = 0
         gyro_Z_calibracion = 0
@@ -47,10 +49,8 @@ class IMU:
         self.angle_pitch_acc_cal = angle_pitch_acc_calibracion / 1000
         self.angle_roll_acc_cal = angle_roll_acc_calibracion / 1000
         self.angle_yaw_acc_cal = angle_yaw_acc_calibracion / 1000
-        print(time.time()-el)
 
         self.loop_timer = time.time()
-        print("Calib1")
 
     def read_i2c(self,register):
         
@@ -60,6 +60,9 @@ class IMU:
         return (msb << 8) + lsb
 
     def processMPU(self):
+        """
+        Returns the deviation from the calibration point
+        """
         ax=self.read_i2c(0x3b)
         ay=self.read_i2c(0x3d)
         az=self.read_i2c(0x3f)
@@ -87,14 +90,3 @@ class IMU:
         
     def setLooptimer(self):
         self.loop_timer = time.time()
-
-
-if __name__ == '__main__':
-    
-    MPU = IMU()
-    MPU.Calibrate()
-    while (1):
-        angulo=MPU.processMPU()
-        print(angulo)
-        MPU.setLooptimer()
-        time.sleep(0.025)
