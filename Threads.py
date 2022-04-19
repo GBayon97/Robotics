@@ -1,7 +1,8 @@
 from threading import Thread,Semaphore,Event
 import time
 from ADC import LDR, IR
-import Robot_def
+import Kinematics
+import Servos
 import IMU_bueno 
 from picamera import PiCamera 
 from picamera.array import PiRGBArray
