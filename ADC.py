@@ -55,11 +55,3 @@ class LDR:
         level=read(self.channel)
         voltage=volts(level)
         return voltage
-class IR:
-    def __init__(self,channel=2):
-        self.channel=channel
-        
-    def value(self):
-        level=read(self.channel)
-        dist=135.422261*(level**-0.990808) #devuelve metros
-        return round(dist*100,4)
