@@ -4,8 +4,9 @@ This project consisted in moving a Robotic arm which in this case we used the Ar
 The material required for recreating it is the following:
 
 RaspberryPi
-RaspberryPi camera
+RaspberryPi-camera
 Arduino Braccio
+LDR
 
 Electronic devices:
   MPU6050
