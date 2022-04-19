@@ -1,3 +1,7 @@
+import time
+import numpy as np
+import math
+
 class Kinematics:
 
     def __init__(self, l1=12.5, l2=12.5, l3=6, items = 10, puntos=none):
@@ -66,7 +70,8 @@ class Kinematics:
 
     def punto_final(self,x, y, z):
     """
-    Returns the closest points from your list of points to your target point
+    x, y, z are the 3D coordinates from the point we want to reach
+    Returns the closests points from your list of points to your target point
     """
         punto = [x, y, z]
         lst=[]
@@ -77,8 +82,10 @@ class Kinematics:
         lst.sort()
         return lst[:self.items]
     
-    def inversa(self,x,y,z):
+    def inversa(self,x,y,z, duracion = 10):
     """
+    x, y, z are the 3D coordinates from the point we want to reach
+    duracion is how much time you want your loop to run if it hasn´t converged per point in your lstt list 
     Returns the angles required for reaching the desired point with coordinates (x,y,z) with the Arduino Braccio
     """
         lstt = self.punto_final(x, y, z)
@@ -108,7 +115,7 @@ class Kinematics:
                 ang3 = ang3 + math.degrees(dq[3])
                 actual = self.directa(ang, ang1, ang2, ang3)
                 actual = np.concatenate((actual, [[0], [0], [0]]))
-                if np.sqrt(float(dx[0] ** 2) + float(dx[1] ** 2) + float(dx[2] ** 2)) < .01 or (time.time() - tiempo) > 10:
+                if np.sqrt(float(dx[0] ** 2) + float(dx[1] ** 2) + float(dx[2] ** 2)) < .01 or (time.time() - tiempo) > duracion:
                     break
             cont=0
             for i in np.array([[ang], [ang1], [ang2], [ang3]]):
